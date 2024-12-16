@@ -18,10 +18,10 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
-const SchoolPage = () => {
+const CardPage = () => {
 	return (
             <div className='flex-1 overflow-auto relative z-10'>
-                <Header title='Schools' />
+                {/* <Header title='Schools' /> */}
 
                 <main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
                     {/* STATS */}
@@ -31,32 +31,20 @@ const SchoolPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1 }}
                     >
-                        <StatCard
+                        {/* <StatCard
                             name='Total School'
                             icon={School}
                             value={5}
                             color='#6366F1'
                         />
-                        {/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
-                        {/* <StatCard
-                            name='Active Users'
-                            icon={UserCheck}
-                            value={userStats.activeUsers.toLocaleString()}
-                            color='#F59E0B'
-                        /> */}
-                        {/* <StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' /> */}
-                    </motion.div>
-                    <SchoolsTable/>
-                    {/* <UsersTable /> */}
+                       */}
 
-                    {/* USER CHARTS */}
-                    {/* <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8'>
-                        <UserGrowthChart />
-                        <UserActivityHeatmap />
-                        <UserDemographicsChart />
-                    </div> */}
+                    </motion.div>
+                  
+
+
                 </main>
             </div>
 	);
 };
-export default SchoolPage;
+export default CardPage;

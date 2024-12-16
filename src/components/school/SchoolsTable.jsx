@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import Modal from "../reuse/Modal";
 import SchoolForm from "./SchoolForm"; 
 import CustomModal from "../reuse/Modal";
+import { Link } from "react-router-dom";
 
 const schoolData = [
 	{ id: 1, name: "École Primaire A", phoneNumber: "01 23 45 67 89", logo: "url_du_logo_a" },
@@ -98,9 +99,9 @@ const SchoolsTable = () => {
 										<div className="text-sm text-gray-300">{school.phoneNumber}</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-										<button className="text-green-400 hover:text-green-300 mr-2">
-											Consulter
-										</button>
+										<Link to={`/school/${school.id}`} className="text-green-400 hover:text-green-300 mr-2">
+											view
+										</Link>
 										<button className="text-indigo-400 hover:text-indigo-300 mr-2">
 											Edit
 										</button>

@@ -4,6 +4,7 @@ import { PlusIcon, Search } from "lucide-react";
 import { Button } from "@mui/material";
 import CustomModal from "../reuse/Modal";
 import StudentForm from "./StudentForm"; // Assuming you have a StudentForm component
+import MultipleStudentForm from "./MultipleStudentForm";
 
 const initialStudentsData = [
 	{
@@ -27,6 +28,7 @@ const StudentsTable = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredStudents, setFilteredStudents] = useState(initialStudentsData);
 	const [showModal, setShowModal] = useState(false);
+    const [showModalAddmultipleStudents,setShowModalAddmultipleStudents] = useState(false)
 
 	const handleSearch = (e) => {
 		const term = e.target.value.toLowerCase();
@@ -49,14 +51,24 @@ const StudentsTable = () => {
 				transition={{ delay: 0.2 }}
 			>
 				<div className="flex justify-between items-center mb-6">
-					<Button
+					<div className="space-x-5">
+                    <Button
 						variant="contained"
 						color="primary"
 						endIcon={<PlusIcon />}
 						onClick={() => setShowModal(prev => !prev)}
 					>
-						New Student
+						New 
 					</Button>
+                    <Button
+						variant="contained"
+						color="primary"
+						endIcon={<PlusIcon />}
+						onClick={() => setShowModalAddmultipleStudents(prev => !prev)}
+					>
+						New Students
+					</Button>
+                    </div>
 					<div className="relative">
 						<input
 							type="text"
@@ -117,7 +129,10 @@ const StudentsTable = () => {
 			</motion.div>
 
 			<CustomModal showModal={showModal} setShowModal={setShowModal}>
-				<StudentForm /> {/* Assuming you have a StudentForm component for adding new students */}
+				<StudentForm /> 
+			</CustomModal>
+            <CustomModal showModal={showModalAddmultipleStudents} setShowModal={setShowModalAddmultipleStudents}>
+				<MultipleStudentForm/> 
 			</CustomModal>
 		</>
 	);

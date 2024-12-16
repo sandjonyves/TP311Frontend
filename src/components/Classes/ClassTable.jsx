@@ -4,6 +4,7 @@ import { PlusIcon, Search } from "lucide-react";
 import { Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import CustomModal from "../reuse/Modal";
 import ClassForm from "./ClassForm"; // Assuming you have a ClassForm component
+import { Link, useLocation, useRoutes } from "react-router-dom";
 
 const schoolsData = [
 	{ id: 1, name: "École Primaire A" },
@@ -24,6 +25,7 @@ const ClassesTable = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredClasses, setFilteredClasses] = useState([]);
 	const [showModal, setShowModal] = useState(false);
+    const currentRoute = useLocation()
 
 	// Effect to set initial classes based on selected school
 	useEffect(() => {
@@ -57,15 +59,17 @@ const ClassesTable = () => {
 				transition={{ delay: 0.2 }}
 			>
 				<div className="flex justify-between items-center mb-6">
-					<FormControl variant="outlined" className="mr-4" >
-						<InputLabel id="school-select-label" style={{color:"white"}}>Select School</InputLabel>
-						<Select
+					  {
+                            currentRoute =='/school'
+                            ?<FormControl variant="outlined" className="mr-4" >
+						    <InputLabel id="school-select-label" style={{color:"white"}}>Select School</InputLabel>
+                      
+                           <Select
 							labelId="school-select-label"
 							value={selectedSchool}
 							onChange={handleSchoolChange}
 							label="Select School"
-                            style={{color:"white"}}
-						>
+                            style={{color:"white"}}>
 							{schoolsData.map((school) => (
 								<MenuItem key={school.id} value={school.id} >
 									{school.name}
@@ -73,6 +77,8 @@ const ClassesTable = () => {
 							))}
 						</Select>
 					</FormControl>
+                    :null
+                    }
 					<Button
 						variant="contained"
 						color="primary"
@@ -123,9 +129,9 @@ const ClassesTable = () => {
 										<div className="text-sm text-gray-300">{classItem.name}</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-										<button className="text-green-400 hover:text-green-300 mr-2">
-											Consulter
-										</button>
+										<Link to={`/classes/${classItem.id}`} className="text-green-400 hover:text-green-300 mr-2">
+											view
+										</Link>
 										<button className="text-indigo-400 hover:text-indigo-300 mr-2">
 											Edit
 										</button>

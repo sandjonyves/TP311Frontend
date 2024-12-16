@@ -19,7 +19,7 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
-const ClassPage = () => {
+const SchoolContainer = () => {
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
 			<Header title='Classes of School ' />
@@ -47,7 +47,7 @@ const ClassPage = () => {
 					/> */}
 					{/* <StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' /> */}
 				</motion.div>
-                <ClassesTable />
+                <ClassesTable  />
 				{/* <UsersTable /> */}
 
 				{/* USER CHARTS */}
@@ -60,4 +60,4 @@ const ClassPage = () => {
 		</div>
 	);
 };
-export default ClassPage;
+export default SchoolContainer;

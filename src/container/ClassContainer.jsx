@@ -1,4 +1,4 @@
-import { School2, UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import { School, School2, UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
@@ -7,8 +7,8 @@ import UsersTable from "../components/users/UsersTable";
 import UserGrowthChart from "../components/users/UserGrowthChart";
 import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
 import UserDemographicsChart from "../components/users/UserDemographicsChart";
-import SchoolsTable from "../components/school/SchoolsTable";
-import ClassesTable from "../components/Classes/ClassTable";
+import StudentsTable from "../components/students/studentTable";
+import { useParams } from "react-router-dom";
 
 
 
@@ -19,10 +19,13 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
-const ClassPage = () => {
+const StudentContainer = () => {
+
+    const params = useParams()
+
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
-			<Header title='Classes of School ' />
+			<Header title='Students' />
 
 			<main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
 				{/* STATS */}
@@ -33,9 +36,9 @@ const ClassPage = () => {
 					transition={{ duration: 1 }}
 				>
 					<StatCard
-						name='Total Class'
-						icon={School2}
-						value={30}
+						name='Total student'
+						icon={School}
+						value={100}
 						color='#6366F1'
 					/>
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
@@ -47,7 +50,7 @@ const ClassPage = () => {
 					/> */}
 					{/* <StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' /> */}
 				</motion.div>
-                <ClassesTable />
+                <StudentsTable/>
 				{/* <UsersTable /> */}
 
 				{/* USER CHARTS */}
@@ -60,4 +63,4 @@ const ClassPage = () => {
 		</div>
 	);
 };
-export default ClassPage;
+export default StudentContainer;
