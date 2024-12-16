@@ -34,7 +34,7 @@ const SchoolPage = () => {
 					<StatCard
 						name='Total School'
 						icon={School}
-						value={userStats.totalUsers.toLocaleString()}
+						value={5}
 						color='#6366F1'
 					/>
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}

@@ -33,9 +33,9 @@ const ClassPage = () => {
 					transition={{ duration: 1 }}
 				>
 					<StatCard
-						name='Total School'
+						name='Total Class'
 						icon={School2}
-						value={userStats.totalUsers.toLocaleString()}
+						value={30}
 						color='#6366F1'
 					/>
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
