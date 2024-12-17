@@ -8,6 +8,7 @@ import UserGrowthChart from "../components/users/UserGrowthChart";
 import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
 import UserDemographicsChart from "../components/users/UserDemographicsChart";
 import SchoolsTable from "../components/school/SchoolsTable";
+import CardList from "../components/card/CardList";
 
 
 
@@ -41,9 +42,10 @@ const CardPage = () => {
 
                     </motion.div>
                   
-
+                          
 
                 </main>
+                <CardList/>
             </div>
 	);
 };

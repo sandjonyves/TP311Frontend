@@ -14,6 +14,8 @@ import ClassPage from './pages/ClassPage'
 import StudentPage from './pages/StudentsPage'
 import StudentContainer from "./container/ClassContainer";
 import SchoolContainer from "./container/SchoolConatiner";
+import CardPage from "./pages/CardPage";
+import CardSavePage from "./pages/CardSavePage";
 function App() {
 	return (
 		<div className='flex h-screen bg-gray-900 text-gray-100 overflow-hidden'>
@@ -30,8 +32,11 @@ function App() {
 				<Route path='/products' element={<ProductsPage />} />
 				<Route path = '/students' element = {<StudentPage/>}/>
 				<Route path = '/classes/:id' element={<StudentContainer/>} />
-				<Route path ='/school/:id' element ={<SchoolContainer/>}/>
+				<Route path = {'/card/save'} element ={<CardSavePage/>}/>
+				<Route path = {'/card/view'} element ={<CardSavePage/>}/>
 
+				<Route path ='/school/:id' element ={<SchoolContainer/>}/>
+				<Route path = '/cards' element ={<CardPage/>}/>
 				<Route path='/users' element={<UsersPage />} />
 				<Route path='/sales' element={<SalesPage />} />
 				<Route path='/orders' element={<OrdersPage />} />
