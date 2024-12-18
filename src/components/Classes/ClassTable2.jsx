@@ -4,11 +4,11 @@ import { PlusIcon, Search } from "lucide-react";
 import { Button, MenuItem, Select, FormControl, InputLabel, Snackbar } from "@mui/material";
 import CustomModal from "../reuse/Modal";
 import ClassForm from "./ClassForm"; // Assuming you have a ClassForm component
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ClassServices from "../../services/api/ClassServices";
 
-const ClassesTable = () => {
+const ClassesTable2 = () => {
 	const [selectedSchool, setSelectedSchool] = useState('');
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredClasses, setFilteredClasses] = useState([]);
@@ -20,22 +20,24 @@ const ClassesTable = () => {
 	const schoolSelector = useSelector(state => state.school);
 	const classSelector  = useSelector(state => state.class)
 
+    const params =useParams()
+
 	const dispatch = useDispatch();
 
-	const initialClassesData = classSelector.class || [{}]; // Assume this gets populated correctly
+	const initialClassesData = classSelector.class || [{}];
 
 	// Update schoolsData based on Redux state
 	const schoolsData = schoolSelector.schools || [];
 
 	// Effect to set initial classes based on selected school
-	useEffect(() => {
-		if (selectedSchool) {
-			const initialFilteredClasses = initialClassesData.filter(
-				(classItem) => classItem.school === Number(selectedSchool)
-			);
-			setFilteredClasses(initialFilteredClasses);
-		}
-	}, [selectedSchool]);
+	// useEffect(() => {
+		
+	// 		const initialFilteredClasses = initialClassesData.filter(
+	// 			(classItem) => classItem.school === Number(selectedSchool)
+	// 		);
+	// 		setFilteredClasses(initialFilteredClasses);
+	
+	// }, [dispatch]);
 
 	const handleSchoolChange = (event) => {
 		setSelectedSchool(event.target.value);
@@ -47,33 +49,23 @@ const ClassesTable = () => {
 		const filtered = initialClassesData.filter(
 			(classItem) =>
 				classItem.name.toLowerCase().includes(term) &&
-				classItem.schoolId === Number(selectedSchool)
+				classItem.school === Number(selectedSchool)
 		);
+        
 		setFilteredClasses(filtered);
 	};
 
 	useEffect(() => {
-		if (selectedSchool) {
-			ClassServices.getClassBySchoolId(dispatch, selectedSchool);
-		}
-	}, [selectedSchool, dispatch]);
+        
+		
+			ClassServices.getClassBySchoolId(dispatch,parseInt(params.id));
+            setFilteredClasses(classSelector.class)
+		
+	}, [ dispatch]);
 
-	// const handleNewClassSubmit = async (newClass) => {
-	// 	setIsLoading(true);
-	// 	try {
-	// 		await ClassServices.createClass(newClass);
-	// 		setRequestMessage("Class created successfully!");
-	// 	} catch (error) {
-	// 		setRequestMessage("Failed to create class.");
-	// 	} finally {
-	// 		setIsLoading(false);
-	// 		setSnackbarOpen(true);
-	// 	}
-	// };
+	
 
-	const handleSnackbarClose = () => {
-		setSnackbarOpen(false);
-	};
+	
 
 	return (
 		<>
@@ -93,7 +85,7 @@ const ClassesTable = () => {
 					>
 						{isLoading ? "Loading..." : "New"}
 					</Button>
-					<FormControl variant="outlined" className="mr-4 w-1/2">
+					{/* <FormControl variant="outlined" className="mr-4 w-1/2">
 						<InputLabel id="school-select-label" style={{ color: "white" }}>
 							Select School
 						</InputLabel>
@@ -110,7 +102,7 @@ const ClassesTable = () => {
 								</MenuItem>
 							))}
 						</Select>
-					</FormControl>
+					</FormControl> */}
 					<div className="relative">
 						<input
 							type="text"
@@ -181,4 +173,4 @@ const ClassesTable = () => {
 	);
 };
 
-export default ClassesTable;
+export default ClassesTable2;

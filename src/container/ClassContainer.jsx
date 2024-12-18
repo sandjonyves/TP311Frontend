@@ -19,7 +19,7 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
-const StudentContainer = () => {
+const ClassContainer = () => {
 
     const params = useParams()
 
@@ -50,7 +50,7 @@ const StudentContainer = () => {
 					/> */}
 					{/* <StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' /> */}
 				</motion.div>
-                <StudentsTable/>
+                <StudentsTable />
 				{/* <UsersTable /> */}
 
 				{/* USER CHARTS */}
@@ -63,4 +63,4 @@ const StudentContainer = () => {
 		</div>
 	);
 };
-export default StudentContainer;
+export default ClassContainer;

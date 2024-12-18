@@ -9,6 +9,7 @@ import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
 import UserDemographicsChart from "../components/users/UserDemographicsChart";
 import SchoolsTable from "../components/school/SchoolsTable";
 import ClassesTable from "../components/Classes/ClassTable";
+import ClassesTable2 from "../components/Classes/ClassTable2";
 
 
 
@@ -47,7 +48,7 @@ const SchoolContainer = () => {
 					/> */}
 					{/* <StatCard name='Churn Rate' icon={UserX} value={userStats.churnRate} color='#EF4444' /> */}
 				</motion.div>
-                <ClassesTable  />
+                <ClassesTable2/>
 				{/* <UsersTable /> */}
 
 				{/* USER CHARTS */}

@@ -22,6 +22,7 @@ const PDFViewer = ({ pdfUrl }) => {
 
             <Viewer
                 fileUrl={pdfUrl}
+                
             />
       {/* <Document
         file={pdfUrl}

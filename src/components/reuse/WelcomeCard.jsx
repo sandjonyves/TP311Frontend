@@ -12,7 +12,7 @@ export default function WelcomCard() {
             <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">Bienvenue</h5>
         </a>
         <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
-        Nous sommes ravis de vous accueillir dans notre application. Profitez d'une expérience simplifiée pour gérer vos missions.
+        Nous sommes ravis de vous accueillir dans notre application. Profitez d'une expérience simplifiée pour gérer vos Cartes .
         </p>
         {/* <a href="#" className="inline-flex font-medium items-center text-blue-600 hover:underline">
             See our guideline
@@ -28,7 +28,7 @@ export default function WelcomCard() {
             <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">À propos de l'application</h5>
         </a>
         <p className="mb-3 font-normal text-gray-500 dark:text-gray-400">
-        Cette application vous aide à suivre et à gérer vos missions efficacement. Connectez-vous pour commencer dès maintenant.
+        Cette application vous aide à suivre et à gérer vos cartes efficacement. Connectez-vous pour commencer dès maintenant.
         </p>
         <span className='mr-4'>pour vous connectez</span>
         <Link to='/signin' className="inline-flex font-medium items-center text-blue-600 hover:underline">

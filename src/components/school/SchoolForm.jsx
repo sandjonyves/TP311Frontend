@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Grid } from '@mui/material';
+import { Box, TextField, Button, Typography, Grid, CircularProgress } from '@mui/material';
+import CloudinaryWidget from '../reuse/CloudinaryWidget';
+import { useSelector } from 'react-redux';
 
 export default function SchoolForm() {
   const [logo, setLogo] = useState(null);
@@ -7,13 +9,9 @@ export default function SchoolForm() {
   const [academicYear, setAcademicYear] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [errors, setErrors] = useState({});
-
-  const handleLogoChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setLogo(URL.createObjectURL(file));
-    }
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+  const userSelector = useSelector(state => state.User)
 
   const validateForm = () => {
     const newErrors = {};
@@ -24,14 +22,46 @@ export default function SchoolForm() {
     if (!/^\d+$/.test(phoneNumber)) newErrors.phoneNumber = 'Phone number must be numeric';
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted", { schoolName, academicYear, phoneNumber, logo });
-      // Logic to handle form submission, including the logo
+      const formData = {
+        user :userSelector.id,
+        name: schoolName,
+        academic_year: academicYear,
+        phone: phoneNumber,
+        logo_url: logo, // Assuming logo is uploaded and returns a valid URL
+      };
+
+      setIsSubmitting(true);
+      setSubmitMessage('');
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/app/schools/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          setSubmitMessage('School created successfully!');
+          console.log('Response:', result);
+        } else {
+          const errorData = await response.json();
+          setSubmitMessage(errorData.message || 'Failed to create school');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        setSubmitMessage('An unexpected error occurred');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -41,18 +71,26 @@ export default function SchoolForm() {
         maxWidth: 600,
         margin: 'auto',
         padding: 3,
-        // boxShadow: 3,
-        // borderRadius: 2,
         bgcolor: '#1F2937', 
         color: 'white', 
       }}
     >
-      <Typography variant="h5" gutterBottom sx={{ color: 'white' }}>
+      <Typography variant="h5" gutterBottom>
         School Information Form
       </Typography>
+      {submitMessage && (
+        <Typography
+          sx={{
+            color: submitMessage.includes('successfully') ? 'green' : 'red',
+            textAlign: 'center',
+            mb: 2,
+          }}
+        >
+          {submitMessage}
+        </Typography>
+      )}
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2}>
-          {/* School Name */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -67,13 +105,12 @@ export default function SchoolForm() {
               InputProps={{
                 style: {
                   color: 'white',
-                  backgroundColor: '#374151', // bg-gray-700 equivalent
+                  backgroundColor: '#374151',
                   borderRadius: 4,
                 },
               }}
             />
           </Grid>
-          {/* Academic Year */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -88,13 +125,12 @@ export default function SchoolForm() {
               InputProps={{
                 style: {
                   color: 'white',
-                  backgroundColor: '#374151', // bg-gray-700 equivalent
+                  backgroundColor: '#374151',
                   borderRadius: 4,
                 },
               }}
             />
           </Grid>
-          {/* Phone Number */}
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -110,21 +146,14 @@ export default function SchoolForm() {
               InputProps={{
                 style: {
                   color: 'white',
-                  backgroundColor: '#374151', // bg-gray-700 equivalent
+                  backgroundColor: '#374151',
                   borderRadius: 4,
                 },
               }}
             />
           </Grid>
-          {/* Upload School Logo */}
           <Grid item xs={12}>
-            <Typography sx={{ color: 'gray', mb: 1 }}>Upload School Logo</Typography>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleLogoChange}
-              style={{ color: 'white' }} // Input color
-            />
+            <CloudinaryWidget setImageUrl={setLogo} />
             {logo && (
               <Box
                 sx={{
@@ -150,21 +179,22 @@ export default function SchoolForm() {
               </Box>
             )}
           </Grid>
-          {/* Submit Button */}
           <Grid item xs={12}>
             <Button
               type="submit"
               variant="contained"
               color="primary"
               fullWidth
+              disabled={isSubmitting}
               sx={{
-                bgcolor: '#3a3a55', // Button background
+                bgcolor: '#3a3a55',
                 '&:hover': {
-                  bgcolor: '#55557f', // Button hover
+                  bgcolor: '#55557f',
                 },
               }}
             >
-              Submit
+              {isSubmitting ?  <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Submit'}
+              {/* {isSubmitting ? 'Submitting...' : 'Submit'} */}
             </Button>
           </Grid>
         </Grid>

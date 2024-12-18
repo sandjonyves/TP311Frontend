@@ -1,33 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { PlusIcon, Search } from "lucide-react";
 import { Button } from "@mui/material";
-import Modal from "../reuse/Modal";
 import SchoolForm from "./SchoolForm"; 
 import CustomModal from "../reuse/Modal";
 import { Link } from "react-router-dom";
-
-const schoolData = [
-	{ id: 1, name: "École Primaire A", phoneNumber: "01 23 45 67 89", logo: "url_du_logo_a" },
-	{ id: 2, name: "Collège B", phoneNumber: "01 23 45 67 90", logo: "url_du_logo_b" },
-	{ id: 3, name: "Lycée C", phoneNumber: "01 23 45 67 91", logo: "url_du_logo_c" },
-];
+import schoolServices from "../../services/api/schoolService";
+import { useDispatch, useSelector } from "react-redux";
 
 const SchoolsTable = () => {
 	const [searchTerm, setSearchTerm] = useState("");
-	const [filteredUsers, setFilteredUsers] = useState(schoolData);
+	const [filteredSchools, setFilteredSchools] = useState([]);
 	const [showModal, setShowModal] = useState(false);
+	const [schoolData, setSchoolData] = useState([]); // Initialise comme un tableau vide
+	const userSelector = useSelector(state => state.User);
+	const dispatch =useDispatch()
+	const schoolSelector = useSelector(state=> state.school)
 
 	const handleSearch = (e) => {
 		const term = e.target.value.toLowerCase();
 		setSearchTerm(term);
-		const filtered = schoolData.filter(
+		const filtered = schoolSelector.schools.filter(
 			(school) => 
 				school.name.toLowerCase().includes(term) || 
-				school.phoneNumber.includes(term) // Corrected to use phoneNumber
+				school.phone.includes(term)
 		);
-		setFilteredUsers(filtered);
+		setFilteredSchools(filtered);
 	};
+
+	useEffect(() => {
+		const fetchSchools = async () => {
+			
+			try {
+				const schools = await schoolServices.getSchoolsByUserId(dispatch,setSchoolData,userSelector.id);
+				setSchoolData( schoolSelector.schools);
+				// console.log(schoolSelector.schools)
+				setFilteredSchools(schools); 
+			} catch (error) {
+				console.error("Failed to fetch schools:", error);
+			}
+		};
+
+		fetchSchools();
+	}, [userSelector.id]);
 
 	return (
 		<>
@@ -49,7 +64,7 @@ const SchoolsTable = () => {
 					<div className="relative">
 						<input
 							type="text"
-							placeholder="Search users..."
+							placeholder="Search schools..."
 							className="bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
 							value={searchTerm}
 							onChange={handleSearch}
@@ -62,19 +77,13 @@ const SchoolsTable = () => {
 					<table className="w-full divide-y divide-gray-700">
 						<thead>
 							<tr>
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Name
-								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Phone Number
-								</th>
-								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-									Actions
-								</th>
+								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
+								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Phone Number</th>
+								<th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Actions</th>
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-gray-700">
-							{filteredUsers.map((school) => (
+							{filteredSchools.map((school) => (
 								<motion.tr
 									key={school.id}
 									initial={{ opacity: 0 }}
@@ -85,29 +94,21 @@ const SchoolsTable = () => {
 										<div className="flex items-center">
 											<div className="flex-shrink-0 h-10 w-10">
 												<div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
-													{school.name.charAt(0)}
+													<img src={school.logo_url} className="rounded-full h-10 w-10 "/>
 												</div>
 											</div>
 											<div className="ml-4">
-												<div className="text-sm font-medium text-gray-100">
-													{school.name}
-												</div>
+												<div className="text-sm font-medium text-gray-100">{school.name}</div>
 											</div>
 										</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap">
-										<div className="text-sm text-gray-300">{school.phoneNumber}</div>
+										<div className="text-sm text-gray-300">{school.phone}</div>
 									</td>
 									<td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-										<Link to={`/school/${school.id}`} className="text-green-400 hover:text-green-300 mr-2">
-											view
-										</Link>
-										<button className="text-indigo-400 hover:text-indigo-300 mr-2">
-											Edit
-										</button>
-										<button className="text-red-400 hover:text-red-300">
-											Delete
-										</button>
+										<Link to={`/schools/${school.id}`} className="text-green-400 hover:text-green-300 mr-2">view</Link>
+										<Link to={`/schools/cards/${school.id}`}  className="text-indigo-400 hover:text-indigo-300 mr-2">Cards</Link>
+										{/* <button className="text-red-400 hover:text-red-300">Delete</button> */}
 									</td>
 								</motion.tr>
 							))}
