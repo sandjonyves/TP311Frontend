@@ -22,6 +22,8 @@ import ClassContainer from "./container/ClassContainer";
 import SchoolContainer from "./container/SchoolContainer";
 import SchoolCardContainer from "./container/SchoolCardContainer";
 import ClassCardContainer from "./container/ClassCardContainer";
+import { Worker } from '@react-pdf-viewer/core';
+import CardView from "./pages/CardView";
 
 function App() {
     const currentRoute = useLocation();
@@ -36,7 +38,9 @@ function App() {
     }, [userSelector.token, isAuthRoute, navigate]);
 
     return (
+        <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js">
         <div className={`flex h-screen overflow-hidden ${isAuthRoute ? "bg-gray-100" : "bg-gray-900 text-gray-100"}`}>
+             
             {/* Background pour les pages non-auth */}
             {!isAuthRoute && (
                 <div className="fixed inset-0 z-0">
@@ -47,6 +51,7 @@ function App() {
 
             {/* Sidebar */}
             {!isAuthRoute && <Sidebar />}
+           
 
             <Routes>
                 {userSelector.token ? (
@@ -59,7 +64,7 @@ function App() {
                         <Route path="/schools/cards/:id" element={<SchoolCardContainer />} />
                         <Route path="/schools/cards/:id/:class_id" element={<ClassCardContainer />} />
                         <Route path="/card/save" element={<CardSavePage />} />
-                        <Route path="/card/view" element={<CardSavePage />} />
+                        <Route path="/cards" element={<CardView />} />
                         <Route path="/users" element={<UsersPage />} />
                         <Route path="/sales" element={<SalesPage />} />
                         <Route path="/orders" element={<OrdersPage />} />
@@ -74,7 +79,9 @@ function App() {
                     </>
                 )}
             </Routes>
-        </div>
+           
+         </div>
+         </Worker>
     );
 }
 

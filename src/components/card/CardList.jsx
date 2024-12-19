@@ -3,16 +3,21 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { Button, Dialog, DialogContent } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import PrototypeServices from '../../services/api/PrototypeServices';
 
 export default function CardList() {
   const [open, setOpen] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState(null);
-
+  const dispatch = useDispatch()
+  const cardsSelector = useSelector(state=> state.Prototype)
   // Fonction pour ouvrir le modal avec l'image sélectionnée
   const handleImageClick = (img) => {
     setSelectedImage(img);
     setOpen(true);
   };
+
+
 
   // Fonction pour fermer le modal
   const handleClose = () => {
@@ -20,11 +25,19 @@ export default function CardList() {
     setSelectedImage(null);
   };
 
+
+  React.useEffect(() => {
+    const fetchStudents = async () => {
+        await PrototypeServices.getPrototype(dispatch);
+    };
+    console.log(cardsSelector)
+    fetchStudents();
+}, [dispatch])
   return (
     <div>
       {/* Liste d'images */}
-      <ImageList cols={3} gap={12}>
-        {itemData.map((item) => (
+      <ImageList cols={6} gap={12} className='w-full h-screen '>
+        {cardsSelector.prototypes.map((item) => (
           <ImageListItem key={item.img} style={{ margin: 10 }}>
             <img
               srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}

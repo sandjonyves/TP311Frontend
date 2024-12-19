@@ -1,37 +1,54 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useRoutes } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import StudentServices from '../services/api/studentServices';
-
+import Resume from '../components/reuse/Resume';
+import { Button } from '@mui/material';
+import { DownloadIcon } from 'lucide-react';
 
 export default function ClassCardContainer() {
     const studentSelector = useSelector((state) => state.student);
     const dispatch = useDispatch();
-    const [students,setStudents] = useState()
+    const [students, setStudents] = useState([]);
+    const params = useParams();
 
-
-    const params = useRoutes()
     useEffect(() => {
-        const fetchStudents = () => {
-             StudentServices.getStudentByClassId(dispatch,params.class_id);
-                // console.log(params.id)
-				console.log(studentSelector)
-                    setStudents(studentSelector.student);
-                    // setFilteredStudents(studentSelector.student);
-                // }
-           
+        const fetchStudents = async () => {
+            await StudentServices.getStudentByClassId(dispatch, params.class_id);
         };
 
         fetchStudents();
-    }, [dispatch, params.class_id]);
-  return (
-    <div>
+    }, [params.class_id]);
 
-        {students.map(()=>{
-            
-        })}
+    // Fonction pour télécharger tous les PDF
+    const handleDownloadAll = async () => {
+        const pdfUrls = studentSelector.student.map(student => student.card_file);
 
+        // Pour chaque URL, on télécharge le PDF
+        pdfUrls.forEach(async (pdfUrl) => {
+            const response = await fetch(pdfUrl);
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = pdfUrl.split('/').pop() || 'document.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href); // Libérer l'URL
+        });
+    };
 
-    </div>
-  )
+    return (
+        <div className='relative overflow-auto w-full grid grid-cols-4'>
+            {studentSelector.student.length > 0 ? (
+                <>
+                    {studentSelector.student.map((student) => (
+                        <div className='flex flex-row' key={student.id}>
+                            <Resume pdfUrl={student.card_file} />
+                        </div>
+                    ))}
+                </>
+            ) : (
+                <p>No students found.</p>
+            )}
+        </div>
+    );
 }

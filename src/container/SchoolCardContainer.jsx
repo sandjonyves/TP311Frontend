@@ -82,7 +82,7 @@ export default function SchoolCardContainer() {
                 classes.map((classeItem) => (
                     <CardClass
                         key={classeItem.id}
-                        img_url={prototypeSelector.setPrototype?.image || ''}
+                        // img_url={prototypeSelector.setPrototype?.image || ''}
                         class_id={classeItem.id}
                         class_name={classeItem.name || 'Unnamed Class'}
                     />

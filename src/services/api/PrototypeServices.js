@@ -8,14 +8,15 @@ import {
 
 const PrototypeServices = {
     // Crée une nouvelle classe
-    createClass: async (classData, setIsLoading, setRequestMessage) => {
+    createPrototype: async (classData, setIsLoading, setRequestMessage) => {
         setIsLoading(true);
         try {
             const response = await Axios.post('/app/prototype/', classData);
-            setRequestMessage(response.data.message);
+            setRequestMessage(response.data.statusText);
+            console.log(response)
             return response.data;
         } catch (error) {
-            const errorMessage = error.response ? error.response.data : error.message;
+            const errorMessage = error.response ? error.response.statusText: error.message;
             setRequestMessage(errorMessage);
             throw errorMessage;
         } finally {
