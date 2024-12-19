@@ -19,8 +19,8 @@ const prototypeSlice = createSlice({
             state.error = null;
         },
         fetchPrototypeSuccess: (state, action) => {
-            state.loading = false;
-            state.prototype = action.payload;
+            // state.loading = false;
+            state.prototypes = action.payload;
         },
         fetchPrototypeFailure: (state, action) => {
             state.loading = false;

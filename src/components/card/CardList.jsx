@@ -2,22 +2,22 @@ import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { Button, Dialog, DialogContent } from '@mui/material';
+import { Button, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import PrototypeServices from '../../services/api/PrototypeServices';
 
 export default function CardList() {
   const [open, setOpen] = React.useState(false);
   const [selectedImage, setSelectedImage] = React.useState(null);
-  const dispatch = useDispatch()
-  const cardsSelector = useSelector(state=> state.Prototype)
+  const [loadingIndexes, setLoadingIndexes] = React.useState({});
+  const dispatch = useDispatch();
+  const cardsSelector = useSelector((state) => state.Prototype);
+
   // Fonction pour ouvrir le modal avec l'image sélectionnée
   const handleImageClick = (img) => {
     setSelectedImage(img);
     setOpen(true);
   };
-
-
 
   // Fonction pour fermer le modal
   const handleClose = () => {
@@ -25,36 +25,55 @@ export default function CardList() {
     setSelectedImage(null);
   };
 
+  // Fonction pour gérer le clic sur "Choisir"
+  const handleCHoise = async (index) => {
+    setLoadingIndexes((prev) => ({ ...prev, [index]: true }));
 
+    try {
+      // Appeler le service pour enregistrer le choix
+      await PrototypeServices.setPrototypeChoice(dispatch, cardsSelector.prototypes[index].id);
+
+      // Mettre à jour automatiquement les données
+      await PrototypeServices.getPrototype(dispatch);
+    } catch (error) {
+      console.error("Erreur lors de l'enregistrement du choix:", error);
+    } finally {
+      setLoadingIndexes((prev) => ({ ...prev, [index]: false }));
+    }
+  };
+
+  // Charger les prototypes au montage
   React.useEffect(() => {
-    const fetchStudents = async () => {
-        await PrototypeServices.getPrototype(dispatch);
-    };
-    console.log(cardsSelector)
-    fetchStudents();
-}, [dispatch])
+    PrototypeServices.getPrototype(dispatch);
+  }, [dispatch]);
+
   return (
     <div>
       {/* Liste d'images */}
-      <ImageList cols={6} gap={12} className='w-full h-screen '>
-        {cardsSelector.prototypes.map((item) => (
-          <ImageListItem key={item.img} style={{ margin: 10 }}>
+      <ImageList cols={5} gap={12}>
+        {cardsSelector.prototypes.map((item, index) => (
+          <ImageListItem key={item.id} style={{ margin: 10 }}>
             <img
-              srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              src={`${item.img}?w=248&fit=crop&auto=format`}
-              alt={item.title}
+              srcSet={`${item.image}`}
+              src={`${item.image}`}
               loading="lazy"
               style={{
                 cursor: 'pointer',
                 transition: 'transform 0.3s ease, opacity 0.3s ease',
               }}
               className="image-hover-effect"
-              onClick={() => handleImageClick(item.img)}
+              onClick={() => handleImageClick(item.image)}
             />
             <ImageListItemBar title={item.title} />
             <div className="flex justify-end space-x-5">
-              <Button variant="contained" color="primary">
-                Choise
+              <Button
+                variant="contained"
+                color={item.choice ? "success" : "primary"}
+                onClick={() => !item.choice && !loadingIndexes[index] ? handleCHoise(index) : null}
+              >
+                {loadingIndexes[index] ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : item.choice ? 'Choisi' : 'Choisir'}
               </Button>
             </div>
           </ImageListItem>
@@ -87,6 +106,7 @@ export default function CardList() {
               height: 'auto',
               maxWidth: '800px',
               borderRadius: '8px',
+              transition: 'transform 0.3s ease',
             }}
           />
         </DialogContent>
@@ -104,66 +124,3 @@ export default function CardList() {
     </div>
   );
 }
-
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-    author: '@bkristastucchio',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-    author: '@rollelflex_graphy726',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-    author: '@helloimnik',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-    title: 'Coffee',
-    author: '@nolanissac',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-    title: 'Hats',
-    author: '@hjrc33',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-    title: 'Honey',
-    author: '@arwinneil',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-    title: 'Basketball',
-    author: '@tjdragotta',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-    title: 'Fern',
-    author: '@katie_wasserman',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-    title: 'Mushrooms',
-    author: '@silverdalex',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-    title: 'Tomato basil',
-    author: '@shelleypauls',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-    title: 'Sea star',
-    author: '@peterlaster',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-    title: 'Bike',
-    author: '@southside_customs',
-  },
-];

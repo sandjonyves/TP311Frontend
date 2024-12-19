@@ -25,14 +25,17 @@ const PrototypeServices = {
     },
 
     // Récupère tous les prototypes
-    getPrototype: () => async (dispatch) => {
-        dispatch(fetchPrototypeStart());
+    getPrototype : async (dispatch) => {
         try {
             const response = await Axios.get('/app/prototype/');
+            console.log(response.data)
+
             dispatch(fetchPrototypeSuccess(response.data));
+            // console.log(response.data)
+            return response.data;
         } catch (error) {
             const errorMessage = error.response ? error.response.data : error.message;
-            dispatch(fetchPrototypeFailure(errorMessage));
+            throw errorMessage;
         }
     },
 
@@ -40,6 +43,23 @@ const PrototypeServices = {
     getPrototypeChoice: async (dispatch) => {
         try {
             const response = await Axios.get('/app/prototype/get-choice/');
+            console.log(response.data)
+
+            dispatch(setPrototype(response.data));
+            // console.log(response.data)
+            return response.data;
+        } catch (error) {
+            const errorMessage = error.response ? error.response.data : error.message;
+            throw errorMessage;
+        }
+    },
+
+      // Récupère le prototype choisi
+      setPrototypeChoice: async (dispatch,prototype_id) => {
+        try {
+            const response = await Axios.post(`/app/prototype/${prototype_id}/set-choice/`);
+            console.log(response.data)
+
             dispatch(setPrototype(response.data));
             // console.log(response.data)
             return response.data;
