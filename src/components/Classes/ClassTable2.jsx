@@ -14,9 +14,9 @@ const ClassesTable2 = () => {
 	const [filteredClasses, setFilteredClasses] = useState([]);
 	const [showModal, setShowModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [requestMessage, setRequestMessage] = useState("");
-	const [snackbarOpen, setSnackbarOpen] = useState(false);
-	const currentRoute = useLocation();
+	// const [requestMessage, setRequestMessage] = useState("");
+	// const [snackbarOpen, setSnackbarOpen] = useState(false);
+	// const currentRoute = useLocation();
 	const schoolSelector = useSelector(state => state.school);
 	const classSelector  = useSelector(state => state.class)
 
@@ -29,27 +29,14 @@ const ClassesTable2 = () => {
 	// Update schoolsData based on Redux state
 	const schoolsData = schoolSelector.schools || [];
 
-	// Effect to set initial classes based on selected school
-	// useEffect(() => {
-		
-	// 		const initialFilteredClasses = initialClassesData.filter(
-	// 			(classItem) => classItem.school === Number(selectedSchool)
-	// 		);
-	// 		setFilteredClasses(initialFilteredClasses);
-	
-	// }, [dispatch]);
 
-	const handleSchoolChange = (event) => {
-		setSelectedSchool(event.target.value);
-	};
 
 	const handleSearch = (e) => {
 		const term = e.target.value.toLowerCase();
 		setSearchTerm(term);
 		const filtered = initialClassesData.filter(
 			(classItem) =>
-				classItem.name.toLowerCase().includes(term) &&
-				classItem.school === Number(selectedSchool)
+				classItem.name.toLowerCase().includes(term)
 		);
         
 		setFilteredClasses(filtered);
@@ -57,7 +44,7 @@ const ClassesTable2 = () => {
 
 	useEffect(() => {
         
-		
+			console.log(classSelector)
 			ClassServices.getClassBySchoolId(dispatch,parseInt(params.id));
             setFilteredClasses(classSelector.class)
 		
@@ -85,24 +72,7 @@ const ClassesTable2 = () => {
 					>
 						{isLoading ? "Loading..." : "New"}
 					</Button>
-					{/* <FormControl variant="outlined" className="mr-4 w-1/2">
-						<InputLabel id="school-select-label" style={{ color: "white" }}>
-							Select School
-						</InputLabel>
-						<Select
-							labelId="school-select-label"
-							value={selectedSchool}
-							onChange={handleSchoolChange}
-							label="Select School"
-							style={{ color: "white" }}
-						>
-							{schoolsData.map((school) => (
-								<MenuItem key={school.id} value={school.id}>
-									{school.name}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl> */}
+				
 					<div className="relative">
 						<input
 							type="text"
@@ -125,7 +95,7 @@ const ClassesTable2 = () => {
 							</tr>
 						</thead>
 						<tbody className="divide-y divide-gray-700">
-							{filteredClasses.map((classItem) => (
+							{initialClassesData.map((classItem) => (
 								<motion.tr
 									key={classItem.id}
 									initial={{ opacity: 0 }}

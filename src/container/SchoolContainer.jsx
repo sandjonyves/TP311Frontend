@@ -10,6 +10,10 @@ import UserDemographicsChart from "../components/users/UserDemographicsChart";
 import SchoolsTable from "../components/school/SchoolsTable";
 import ClassesTable from "../components/Classes/ClassTable";
 import ClassesTable2 from "../components/Classes/ClassTable2";
+import ClassServices from "../services/api/ClassServices";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 
 
@@ -20,7 +24,21 @@ const userStats = {
 	churnRate: "2.4%",
 };
 
+
 const SchoolContainer = () => {
+	const dispatch = useDispatch()
+
+	const {id}= useParams()
+
+
+	useEffect(() => {
+	
+		ClassServices.getClassBySchoolId(dispatch, parseInt(id)).finally(() => {
+			
+		});
+	
+}, [dispatch]);
+
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
 			<Header title='Classes of School ' />
