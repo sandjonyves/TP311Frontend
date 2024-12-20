@@ -21,6 +21,8 @@ const userSlice = createSlice({
             state.password = password;
         },
         clearUser: (state) => {
+            state.token='';
+            state.id='';
             state.username = '';
             state.email = '';
             state.password = '';

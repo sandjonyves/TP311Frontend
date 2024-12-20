@@ -11,15 +11,16 @@ class User{
         
                 Axios.post('/account/register/', formData)
                     .then((response) => {
-                        console.log(response);
+                        // console.log(response);
                         setMessageError('Account created successfully!');
                         setIsLoading(false);
         
                         // const token = response.data.access; 
                         const decodedToken = jwtDecode(response.data.access);
                         const userData = {token:response.data.access, id:decodedToken.id,username: formData.username, email: formData.email }; // Ajustez selon votre réponse
-                        dispatch(setUser(userData)); // Stockez les données de l'utilisateur dans le store
-                        navigate('/'); // Redirection après l'enregistrement
+                        console.log(userData)
+                        dispatch(setUser(userData)); 
+                        navigate('/'); 
                     })
                     .catch((error) => {
                         console.log(error);
@@ -83,19 +84,19 @@ class User{
             });
     }
 
-        userLogout(dispatch, user, navigate, setIsLoading) {
-        setIsLoading(true);
+        userLogout(dispatch, user, navigate) {
+        // setIsLoading(true);
         Axios.post(`/account/logout/${user.id}`)
             .then((response) => {
                 console.log(response);
-                setIsLoading(false);
+                // setIsLoading(false);
 
                 // Effacer les données d'authentification dans le store
                 dispatch(clearUser());
                 navigate('/signin'); // Redirection après déconnexion
             })
             .catch((error) => {
-                setIsLoading(false);
+                // setIsLoading(false);
                 console.log(error);
             });
     }
