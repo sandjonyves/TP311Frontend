@@ -9,6 +9,7 @@ import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
 import UserDemographicsChart from "../components/users/UserDemographicsChart";
 import SchoolsTable from "../components/school/SchoolsTable";
 import ClassesTable from "../components/Classes/ClassTable";
+import { useSelector } from "react-redux";
 
 
 
@@ -20,6 +21,8 @@ const userStats = {
 };
 
 const ClassPage = () => {
+	const classSelector  = useSelector(state => state.class)
+
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
 			<Header title='Classes of School ' />
@@ -35,7 +38,7 @@ const ClassPage = () => {
 					<StatCard
 						name='Total Class'
 						icon={School2}
-						value={30}
+						value={classSelector.class.length}
 						color='#6366F1'
 					/>
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}

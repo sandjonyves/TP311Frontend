@@ -11,7 +11,7 @@ import SchoolsTable from "../components/school/SchoolsTable";
 import ClassesTable from "../components/Classes/ClassTable";
 import ClassesTable2 from "../components/Classes/ClassTable2";
 import ClassServices from "../services/api/ClassServices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -27,6 +27,7 @@ const userStats = {
 
 const SchoolContainer = () => {
 	const dispatch = useDispatch()
+	const classSelector = useSelector(state=> state.class)
 
 	const {id}= useParams()
 
@@ -54,7 +55,7 @@ const SchoolContainer = () => {
 					<StatCard
 						name='Total Class'
 						icon={School2}
-						value={30}
+						value={classSelector.class.length}
 						color='#6366F1'
 					/>
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
