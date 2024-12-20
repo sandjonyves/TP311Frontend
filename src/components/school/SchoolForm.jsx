@@ -40,23 +40,8 @@ export default function SchoolForm() {
       setIsSubmitting(true);
       setSubmitMessage('');
 
-      try {
-        schoolServices.createSchool(formData,setIsSubmitting,setSubmitMessage)
-          
-        // if (response.ok) {
-        //   const result = await response.json();
-        //   setSubmitMessage('School created successfully!');
-        //   console.log('Response:', result);
-        // } else {
-        //   const errorData = await response.json();
-        //   setSubmitMessage(errorData.message || 'Failed to create school');
-        // }
-      } catch (error) {
-        console.error('Error:', error);
-        setSubmitMessage('An unexpected error occurred');
-      } finally {
-        setIsSubmitting(false);
-      }
+    schoolServices.createSchool(formData,setIsSubmitting,setSubmitMessage)
+        
     }
   };
 

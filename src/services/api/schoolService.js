@@ -6,8 +6,8 @@ const schoolServices = {
     createSchool: async (schoolData,setIsLoading,setMessageError) => {
         setIsLoading(true)
         try {
-            const response = await Axios.post('/app/school/', schoolData);
-            setMessageError(response.data.message)
+            const response = await Axios.post('/app/schools/', schoolData);
+            setMessageError('create School successfully ')
             setIsLoading(false)
             console.log(response)
             return response.data;
@@ -24,7 +24,7 @@ const schoolServices = {
     getSchools: () => async (dispatch) => {
         dispatch(fetchSchoolsStart());
         try {
-            const response = await Axios.get('/app/school/');
+            const response = await Axios.get('/app/schools/');
             dispatch(fetchSchoolsSuccess(response.data));
         } catch (error) {
             dispatch(fetchSchoolsFailure(error.response ? error.response.data : error.message));
@@ -49,7 +49,7 @@ const schoolServices = {
     // Get a school by ID
     getSchoolById: async (id) => {
         try {
-            const response = await Axios.get(`/app/school/${id}/`);
+            const response = await Axios.get(`/app/schools/${id}/`);
             return response.data;
         } catch (error) {
             throw error.response ? error.response.data : error.message;
@@ -59,7 +59,7 @@ const schoolServices = {
     // Update a school
     updateSchool: async (id, schoolData) => {
         try {
-            const response = await Axios.put(`/app/school/${id}/`, schoolData);
+            const response = await Axios.put(`/app/schools/${id}/`, schoolData);
             return response.data;
         } catch (error) {
             throw error.response ? error.response.data : error.message;
@@ -69,7 +69,7 @@ const schoolServices = {
     // Delete a school
     deleteSchool: async (id) => {
         try {
-            const response = await Axios.delete(`/app/school/${id}/`);
+            const response = await Axios.delete(`/app/schools/${id}/`);
             return response.data;
         } catch (error) {
             throw error.response ? error.response.data : error.message;
