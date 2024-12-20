@@ -8,9 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 const SIDEBAR_ITEMS = [
     { name: "School", icon: School, color: "#6366f1", href: "/" },
     { name: "Classes", icon: ClipboardList, color: "#8B5CF6", href: "/classes" },
-    { name: "Students", icon: Users, color: "#EC4899", href: "/students" },
+    // { name: "Students", icon: Users, color: "#EC4899", href: "/students" },
     { name: "Card", icon: CreditCardIcon, color: "#8B5CF6", href: "/cards" },
-    
     { name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
     { name: "Logout", icon: LogOutIcon, color: "red", href: "/signin" }
 ];
