@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Grid, CircularProgress } from '@mui/material';
 import CloudinaryWidget from '../reuse/CloudinaryWidget';
 import { useSelector } from 'react-redux';
+import schoolServices from '../../services/api/schoolService';
 
 export default function SchoolForm() {
   const [logo, setLogo] = useState(null);
@@ -40,22 +41,16 @@ export default function SchoolForm() {
       setSubmitMessage('');
 
       try {
-        const response = await fetch('http://127.0.0.1:8000/app/schools/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          setSubmitMessage('School created successfully!');
-          console.log('Response:', result);
-        } else {
-          const errorData = await response.json();
-          setSubmitMessage(errorData.message || 'Failed to create school');
-        }
+        schoolServices.createSchool(formData,setIsSubmitting,setSubmitMessage)
+          
+        // if (response.ok) {
+        //   const result = await response.json();
+        //   setSubmitMessage('School created successfully!');
+        //   console.log('Response:', result);
+        // } else {
+        //   const errorData = await response.json();
+        //   setSubmitMessage(errorData.message || 'Failed to create school');
+        // }
       } catch (error) {
         console.error('Error:', error);
         setSubmitMessage('An unexpected error occurred');

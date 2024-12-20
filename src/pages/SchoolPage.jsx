@@ -1,23 +1,23 @@
-import { School, School2, UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import { School } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
-import UsersTable from "../components/users/UsersTable";
-import UserGrowthChart from "../components/users/UserGrowthChart";
-import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
-import UserDemographicsChart from "../components/users/UserDemographicsChart";
+// import UsersTable from "../components/users/UsersTable";
+// import UserGrowthChart from "../components/users/UserGrowthChart";
+// import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
+// import UserDemographicsChart from "../components/users/UserDemographicsChart";
 import SchoolsTable from "../components/school/SchoolsTable";
 import { useSelector } from "react-redux";
 
 
 
-const userStats = {
-	totalUsers: 152845,
-	newUsersToday: 243,
-	activeUsers: 98520,
-	churnRate: "2.4%",
-};
+// const userStates = {
+// 	totalUsers: 152845,
+// 	newUsersToday: 243,
+// 	activeUsers: 98520,
+// 	churnRate: "2.4%",
+// };
 
 const SchoolPage = () => {
 
