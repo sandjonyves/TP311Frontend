@@ -7,11 +7,13 @@ const StudentServices = {
         setIsLoading(true);
         try {
             const response = await Axios.post('/app/students/', studentData);
-            setRequestMessage(response.data.message);
+            console.log(response.data)
+            // updateStudents(response.data)
+            setRequestMessage('Student added successfully!');
             return response.data;
         } catch (error) {
             console.log(error)
-            setRequestMessage(error.response ? error.response.data.message : error.message);
+            setRequestMessage('Failed to add student. Please try again.');
             
             // throw error.response ? error.response.data : error.message;
         } finally {
@@ -31,9 +33,11 @@ const StudentServices = {
     },
 
     // Get Classes by School ID
-    getStudentByClassId: async (dispatch, schoolId) => {
+    getStudentByClassId: async (dispatch, setIsLoading,schoolId) => {
+        setIsLoading(true)
         try {
             const response = await Axios.get(`/app/students/classe/${parseInt(schoolId)}/`);
+            setIsLoading(false)
             dispatch(fetchStudentSuccess(response.data));
             return response.data;
         } catch (error) {

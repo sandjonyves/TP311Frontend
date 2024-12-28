@@ -1,97 +1,52 @@
-// import React, { useEffect, useState } from 'react'
-// import Header from '../components/common/Header'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { useParams } from 'react-router-dom';
-// import ClassServices from '../services/api/ClassServices';
-// import CardClass from '../components/Classes/CardClass';
-// import PrototypeServices from '../services/api/PrototypeServices';
+import { School, School2, UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import { motion } from "framer-motion";
 
-// export default function SchoolCardContainer() {
-
-//     const params = useParams();
-//     const dispatch = useDispatch();
-
-//     const classSelector = useSelector((state) => state.class);
-//     const prototypeSelector = useSelector((state) => state.Prototype); // Correction : clé en minuscule
-
-//     const [classes, setClasses] = useState([]);
-//     const [prototype, setPrototype] = useState(null);
-
-//     useEffect(() => {
-//         // Appels d'API pour récupérer les données
-    
-//      ClassServices.getClassBySchoolId(dispatch, params.id);
-//         PrototypeServices.getPrototypeChoice(dispatch);
-     
-//     }, [dispatch, params.id]);
-
-//     useEffect(() => {
-//         // Met à jour l'état une fois les données disponibles
-//         if (classSelector.class) setClasses(classSelector.class);
-//         if (prototypeSelector.setPrototype) setPrototype(prototypeSelector.setPrototype);
-//     }, [classSelector, prototypeSelector]);
-
-//   return (
-//     <div className='flex-1 overflow-auto relative z-10'>
-//     <Header title='Schools' />
-//     dfsfdsf
-//     </div>
-//   )
-// }
+import Header from "../components/common/Header";
+import StatCard from "../components/common/StatCard";
+import UsersTable from "../components/users/UsersTable";
+import UserGrowthChart from "../components/users/UserGrowthChart";
+import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
+import UserDemographicsChart from "../components/users/UserDemographicsChart";
+import SchoolsTable from "../components/school/SchoolsTable";
+import CardList from "../components/card/CardList";
 
 
 
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import ClassServices from '../services/api/ClassServices';
-import CardClass from '../components/Classes/CardClass';
-import PrototypeServices from '../services/api/PrototypeServices';
+const userStats = {
+	totalUsers: 152845,
+	newUsersToday: 243,
+	activeUsers: 98520,
+	churnRate: "2.4%",
+};
 
-export default function SchoolCardContainer() {
-    const params = useParams();
-    const dispatch = useDispatch();
+const CardPage = () => {
+	return (
+            <div className='flex-1 overflow-auto relative z-10'>
+                {/* <Header title='Schools' /> */}
 
-    const classSelector = useSelector((state) => state.class);
-    const prototypeSelector = useSelector((state) => state.Prototype); // Correction : clé en minuscule
+                <main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
+                    {/* STATS */}
+                    <motion.div
+                        className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8'
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                    >
+                        {/* <StatCard
+                            name='Total School'
+                            icon={School}
+                            value={5}
+                            color='#6366F1'
+                        />
+                       */}
 
-    const [classes, setClasses] = useState([]);
-    const [prototype, setPrototype] = useState(null);
+                    </motion.div>
+                  
+                          
 
-    useEffect(() => {
-        // Appels d'API pour récupérer les données
-        const fetchData = async () => {
-            await ClassServices.getClassBySchoolId(dispatch, params.id);
-            await PrototypeServices.getPrototypeChoice(dispatch);
-        console.log(prototypeSelector)
-        };
-
-        fetchData();
-    }, [dispatch, params.id]);
-
-    useEffect(() => {
-        // Met à jour l'état une fois les données disponibles
-        if (classSelector.class) setClasses(classSelector.class);
-        // if (prototypeSelector.setPrototype) setPrototype(prototypeSelector.setPrototype);
-    }, [classSelector, prototypeSelector]);
-
-    return (
-        <div className='relative'>
-           <div className='grid grid-cols-4 md:grid-cols-2 gap-3'>
-           {classes.length > 0 ? (
-                classes.map((classeItem) => (
-                    <CardClass
-                        key={classeItem.id}
-                        // img_url={prototypeSelector.setPrototype?.image || ''}
-                        class_id={classeItem.id}
-                        class_name={classeItem.name || 'Unnamed Class'}
-                    />
-                ))
-            ) : (
-                <p>No classes available.</p>
-            )}
-           </div>
-         
-        </div>
-    );
-}
+                </main>
+                <CardList/>
+            </div>
+	);
+};
+export default CardPage;

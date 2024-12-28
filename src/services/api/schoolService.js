@@ -35,6 +35,7 @@ const schoolServices = {
     async getSchoolsByUserId(dispatch,setSchoolsData,user_id){
         try {
             const response = await Axios.get(`/app/schools/user/${user_id}/`);
+            console.log('user school', response.data)
             dispatch(fetchSchoolsSuccess(response.data));
             return response.data;
         } catch (error) {

@@ -55,9 +55,11 @@ const PrototypeServices = {
     },
 
       // Récupère le prototype choisi
-      setPrototypeChoice: async (dispatch,prototype_id) => {
+      setPrototypeChoice: async (dispatch,prototype_id,school_id) => {
         try {
-            const response = await Axios.post(`/app/prototype/${prototype_id}/set-choice/`);
+            const response = await Axios.post(`/app/prototype/${prototype_id}/set-choice/`, {
+                school_id: school_id,
+              });
             console.log(response.data)
 
             dispatch(setPrototype(response.data));
@@ -68,6 +70,23 @@ const PrototypeServices = {
             throw errorMessage;
         }
     },
+
+    setPrototypeUnChoice: async (dispatch,prototype_id,school_id) => {
+        try {
+            const response = await Axios.post(`/app/prototype/${prototype_id}/set-Unchoice/`, {
+                school_id: school_id,
+              });
+            console.log(response.data)
+
+            dispatch(setPrototype(response.data));
+            // console.log(response.data)
+            return response.data;
+        } catch (error) {
+            const errorMessage = error.response ? error.response.data : error.message;
+            throw errorMessage;
+        }
+    },
+
 
     // Récupère un prototype par son ID
     getPrototypeById: async (id) => {
@@ -104,3 +123,5 @@ const PrototypeServices = {
 };
 
 export default PrototypeServices;
+
+

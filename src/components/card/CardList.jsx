@@ -5,6 +5,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { Button, CircularProgress, Dialog, DialogContent } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import PrototypeServices from '../../services/api/PrototypeServices';
+import { useParams } from 'react-router-dom';
 
 export default function CardList() {
   const [open, setOpen] = React.useState(false);
@@ -12,6 +13,13 @@ export default function CardList() {
   const [loadingIndexes, setLoadingIndexes] = React.useState({});
   const dispatch = useDispatch();
   const cardsSelector = useSelector((state) => state.Prototype);
+
+  const { school_id } = useParams();
+
+  // Vérifie si un prototype est déjà choisi
+  const isPrototypeChosen = cardsSelector.prototypes.some(
+    (item) => item.choice && item.school_choice.includes(parseInt(school_id))
+  );
 
   // Fonction pour ouvrir le modal avec l'image sélectionnée
   const handleImageClick = (img) => {
@@ -26,17 +34,28 @@ export default function CardList() {
   };
 
   // Fonction pour gérer le clic sur "Choisir"
-  const handleCHoise = async (index) => {
+  const handleChoice = async (index) => {
     setLoadingIndexes((prev) => ({ ...prev, [index]: true }));
 
     try {
-      // Appeler le service pour enregistrer le choix
-      await PrototypeServices.setPrototypeChoice(dispatch, cardsSelector.prototypes[index].id);
-
-      // Mettre à jour automatiquement les données
+      await PrototypeServices.setPrototypeChoice(dispatch, cardsSelector.prototypes[index].id, school_id);
       await PrototypeServices.getPrototype(dispatch);
     } catch (error) {
-      console.error("Erreur lors de l'enregistrement du choix:", error);
+      console.error('Erreur lors de l\'enregistrement du choix:', error);
+    } finally {
+      setLoadingIndexes((prev) => ({ ...prev, [index]: false }));
+    }
+  };
+
+  // Fonction pour gérer le clic sur "Désélectionner"
+  const handleUnChoice = async (index) => {
+    setLoadingIndexes((prev) => ({ ...prev, [index]: true }));
+
+    try {
+      await PrototypeServices.setPrototypeUnChoice(dispatch, cardsSelector.prototypes[index].id, school_id);
+      await PrototypeServices.getPrototype(dispatch);
+    } catch (error) {
+      console.error('Erreur lors de la désélection:', error);
     } finally {
       setLoadingIndexes((prev) => ({ ...prev, [index]: false }));
     }
@@ -49,7 +68,6 @@ export default function CardList() {
 
   return (
     <div>
-      {/* Liste d'images */}
       <ImageList cols={5} gap={12}>
         {cardsSelector.prototypes.map((item, index) => (
           <ImageListItem key={item.id} style={{ margin: 10 }}>
@@ -66,21 +84,37 @@ export default function CardList() {
             />
             <ImageListItemBar title={item.title} />
             <div className="flex justify-end space-x-5">
-              <Button
-                variant="contained"
-                color={item.choice ? "success" : "primary"}
-                onClick={() => !item.choice && !loadingIndexes[index] ? handleCHoise(index) : null}
-              >
-                {loadingIndexes[index] ? (
-                  <CircularProgress size={20} color="inherit" />
-                ) : item.choice ? 'Choisi' : 'Choisir'}
-              </Button>
+             {!item.choice
+             ? <Button
+             variant="contained"
+             color={item.choice ? 'success' : 'primary'}
+             disabled={isPrototypeChosen && !item.choice }
+             onClick={() => handleChoice(index)}
+           >
+             {loadingIndexes[index] ? (
+               <CircularProgress size={20} color="inherit" />
+             ) : item.choice ? 'Choisi' : 'Choisir'}
+           </Button>
+           :null
+             
+             }
+              {item.choice && item.school_choice.includes(parseInt(school_id)) && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  // disabled={loadingIndexes[index]}
+                  onClick={() => handleUnChoice(index)}
+                >
+                  {loadingIndexes[index] ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : 'Désélectionner'}
+                </Button>
+              )}
             </div>
           </ImageListItem>
         ))}
       </ImageList>
 
-      {/* Modal pour afficher l'image agrandie */}
       <Dialog
         open={open}
         onClose={handleClose}
@@ -112,7 +146,6 @@ export default function CardList() {
         </DialogContent>
       </Dialog>
 
-      {/* Effet Hover CSS */}
       <style>
         {`
           .image-hover-effect:hover {

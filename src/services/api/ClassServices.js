@@ -32,12 +32,18 @@ const ClassServices = {
     },
     
 
-    async getClassBySchoolId(dispatch,school_id){
+    async getClassBySchoolId(dispatch,setIsLoading,school_id){
+        setIsLoading(true)
         try {
             const response = await Axios.get(`/app/classes/school/${school_id}/`);
+            console.log('classe',response.data)
             dispatch(fetchClassSuccess(response.data));
+            setIsLoading(false)
+
             return response.data;
         } catch (error) {
+            setIsLoading(false)
+
             throw error.response ? error.response.data : error.message;
         }
     },

@@ -1,30 +1,24 @@
-import { School, School2, UserCheck, UserPlus, UsersIcon, UserX } from "lucide-react";
+import {  UsersIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
-import UsersTable from "../components/users/UsersTable";
-import UserGrowthChart from "../components/users/UserGrowthChart";
-import UserActivityHeatmap from "../components/users/UserActivityHeatmap";
-import UserDemographicsChart from "../components/users/UserDemographicsChart";
+
 import StudentsTable from "../components/students/studentTable";
-import { useParams } from "react-router-dom";
+
+import { useSelector } from "react-redux";
+import ClassCardContainer from "./ClassCardContainer";
 
 
 
-const userStats = {
-	totalUsers: 152845,
-	newUsersToday: 243,
-	activeUsers: 98520,
-	churnRate: "2.4%",
-};
 
 const ClassContainer = () => {
 
-    const params = useParams()
+    const studentSelector = useSelector(state=>state.student)
 
 	return (
 		<div className='flex-1 overflow-auto relative z-10'>
+			<ClassCardContainer />
 			<Header title='Students' />
 
 			<main className='max-w-7xl mx-auto py-6 px-4 lg:px-8'>
@@ -35,12 +29,24 @@ const ClassContainer = () => {
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 1 }}
 				>
+						{/* {
+						isLoading?
+						<SkeletonStatCard/>
+						
+						:
 					<StatCard
+			name='Total Class'
+			icon={School2}
+			value={classSelector.class.length}
+			color='#6366F1'
+		/> */}
+					{/* } */}
+					{/* <StatCard
 						name='Total student'
-						icon={School}
-						value={100}
+						icon={UsersIcon}
+						value={studentSelector.student.length}
 						color='#6366F1'
-					/>
+					/> */}
 					{/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
 					{/* <StatCard
 						name='Active Users'

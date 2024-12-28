@@ -24,6 +24,7 @@ import SchoolCardContainer from "./container/SchoolCardContainer";
 import ClassCardContainer from "./container/ClassCardContainer";
 import { Worker } from '@react-pdf-viewer/core';
 import CardView from "./pages/CardView";
+import UserProfile from "./components/users/UserProfil";
 
 function App() {
     const currentRoute = useLocation();
@@ -59,9 +60,10 @@ function App() {
                         <Route path="/" element={<SchoolPage />} />
                         <Route path="/classes" element={<ClassPage />} />
                         <Route path="/students" element={<StudentPage />} />
-                        <Route path="/classes/:id" element={<ClassContainer />} />
+                        <Route path="/student/profile/:student_id" element={<UserProfile />} />
+                        <Route path="/classes/:class_id" element={<ClassContainer />} />
                         <Route path="/schools/:id" element={<SchoolContainer />} />
-                        <Route path="/schools/cards/:id" element={<SchoolCardContainer />} />
+                        <Route path="/schools/cards/:school_id" element={<SchoolCardContainer />} />
                         <Route path="/schools/cards/:id/:class_id" element={<ClassCardContainer />} />
                         <Route path="/card/save" element={<CardSavePage />} />
                         <Route path="/cards" element={<CardView />} />

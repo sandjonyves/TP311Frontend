@@ -4,7 +4,7 @@ import CloudinaryWidget from '../reuse/CloudinaryWidget';
 import { useSelector } from 'react-redux';
 import schoolServices from '../../services/api/schoolService';
 
-export default function SchoolForm() {
+export default function SchoolForm({ onSuccess }) {
   const [logo, setLogo] = useState(null);
   const [schoolName, setSchoolName] = useState('');
   const [academicYear, setAcademicYear] = useState('');
@@ -12,7 +12,7 @@ export default function SchoolForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
-  const userSelector = useSelector(state => state.User)
+  const userSelector = useSelector((state) => state.User);
 
   const validateForm = () => {
     const newErrors = {};
@@ -30,7 +30,7 @@ export default function SchoolForm() {
     event.preventDefault();
     if (validateForm()) {
       const formData = {
-        user :userSelector.id,
+        user: userSelector.id,
         name: schoolName,
         academic_year: academicYear,
         phone: phoneNumber,
@@ -40,8 +40,22 @@ export default function SchoolForm() {
       setIsSubmitting(true);
       setSubmitMessage('');
 
-    schoolServices.createSchool(formData,setIsSubmitting,setSubmitMessage)
-        
+      try {
+        const newSchool = await schoolServices.createSchool(
+          formData,
+          setIsSubmitting,
+          setSubmitMessage
+        );
+
+        if (newSchool && onSuccess) {
+          onSuccess(newSchool); // Notify parent component with the new school
+        }
+      } catch (error) {
+        console.error('Error creating school:', error);
+        setSubmitMessage('Failed to create school. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -51,8 +65,8 @@ export default function SchoolForm() {
         maxWidth: 600,
         margin: 'auto',
         padding: 3,
-        bgcolor: '#1F2937', 
-        color: 'white', 
+        bgcolor: '#1F2937',
+        color: 'white',
       }}
     >
       <Typography variant="h5" gutterBottom>
@@ -173,8 +187,11 @@ export default function SchoolForm() {
                 },
               }}
             >
-              {isSubmitting ?  <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Submit'}
-              {/* {isSubmitting ? 'Submitting...' : 'Submit'} */}
+              {isSubmitting ? (
+                <CircularProgress size={24} sx={{ color: 'white' }} />
+              ) : (
+                'Submit'
+              )}
             </Button>
           </Grid>
         </Grid>

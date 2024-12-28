@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import StudentServices from '../../services/api/studentServices';
 import CloudinaryWidget from '../reuse/CloudinaryWidget';
 
-export default function StudentForm() {
+export default function StudentForm({ onSuccess }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -52,22 +52,18 @@ export default function StudentForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit =async (event) => {
     event.preventDefault();
     if (validateForm()) {
-      setIsLoading(true);
-      try {
-        await StudentServices.createStudent(formData, setIsLoading, setRequestMessage);
-        setAlertType('success');
-        resetForm();
-      } catch (error) {
-        setAlertType('error');
-      } finally {
-        setIsLoading(false);
+      // setIsLoading(true);
+      
+      const newStudent =  await StudentServices.createStudent(formData, setIsLoading, setRequestMessage);
+      console.log(newStudent)
+      if (requestMessage.includes('successfull')){
+        onSuccess(newStudent)
       }
-    }
-  };
-
+  }
+  }
   const resetForm = () => {
     setFormData({
       firstName: '',
@@ -98,7 +94,7 @@ export default function StudentForm() {
       </Typography>
 
       {requestMessage && (
-        <Alert severity={alertType} sx={{ marginBottom: 2 }}>
+        <Alert severity={requestMessage.includes('successfull')?'success':'error'} sx={{ marginBottom: 2 }}>
           {requestMessage}
         </Alert>
       )}

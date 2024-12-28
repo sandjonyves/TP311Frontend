@@ -34,12 +34,12 @@ const SchoolPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1 }}
                     >
-                        <StatCard
+                        {/* <StatCard
                             name='Total School'
                             icon={School}
                             value={schoolSelector.schools.length}
                             color='#6366F1'
-                        />
+                        /> */}
                         {/* <StatCard name='New Users Today' icon={UserPlus} value={userStats.newUsersToday} color='#10B981' /> */}
                         {/* <StatCard
                             name='Active Users'
