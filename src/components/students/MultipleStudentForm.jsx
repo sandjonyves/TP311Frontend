@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Button, Typography, CircularProgress } from "@mui/material";
+import { Button, Typography, CircularProgress, ImageListItem } from "@mui/material";
 import Axios from "../../utils/axios";
 import { useParams } from "react-router-dom";
-import Papa from "papaparse"; // Ajoutez Papaparse pour le parsing CSV
-
+import Papa from "papaparse"; 
+import csvImage from '../../assets/csv.png'
 const MultipleStudentForm = () => {
     const [file, setFile] = useState(null);
     const [error, setError] = useState("");
@@ -84,6 +84,10 @@ const MultipleStudentForm = () => {
         <div className="csv-upload-form">
             <Typography variant="h6" style={{ marginBlock: 50 }}>
                 Choose a CSV of Students
+            </Typography>
+            <img src={csvImage} /> 
+            <Typography variant="h6" style={{ marginBlock: 2 }}>
+                ci dessus ce trouve la stucture d'un csv
             </Typography>
 
             <input
