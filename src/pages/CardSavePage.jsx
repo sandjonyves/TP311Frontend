@@ -17,6 +17,7 @@ export default function CardSavePage() {
 
   return (
     <div className="flex w-full relative items-center justify-center h-screen">
+      {requestMessage}
       <Card sx={{ width: 400, padding: 2 }}>
         <CardContent>
           <Typography variant="h5" component="div" gutterBottom>

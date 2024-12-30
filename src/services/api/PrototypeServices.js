@@ -12,12 +12,12 @@ const PrototypeServices = {
         setIsLoading(true);
         try {
             const response = await Axios.post('/app/prototype/', classData);
-            setRequestMessage(response.data.statusText);
+            setRequestMessage('successfully save');
             console.log(response)
             return response.data;
         } catch (error) {
             const errorMessage = error.response ? error.response.statusText: error.message;
-            setRequestMessage(errorMessage);
+            setRequestMessage('error please try again');
             throw errorMessage;
         } finally {
             setIsLoading(false);
