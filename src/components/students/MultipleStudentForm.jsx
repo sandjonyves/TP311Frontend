@@ -87,7 +87,7 @@ const MultipleStudentForm = () => {
             </Typography>
             <img src={csvImage} /> 
             <Typography variant="h6" style={{ marginBlock: 2 }}>
-                ci dessus ce trouve la stucture d'un csv
+                ci dessus se trouve la stucture d'un csv
             </Typography>
 
             <input
