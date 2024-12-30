@@ -21,7 +21,7 @@ const PDFViewer = ({ pdfUrl }) => {
     <div>
 
             <Viewer
-                fileUrl={pdfUrl}
+                fileUrl={'http://localhost:8000/media/carde_1.pdf'}
                 
             />
       {/* <Document

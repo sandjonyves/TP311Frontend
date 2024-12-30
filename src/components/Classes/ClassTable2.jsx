@@ -26,8 +26,8 @@ const ClassesTable2 = () => {
 
 	// Fetch classes by schoolId
 	const fetchClasses = async () => {
-	  	await ClassServices.getClassBySchoolId(dispatch,setIsLoading ,parseInt(params.id));
-		const classes = classSelector.class; // Get the classes from Redux state
+	  	const  classes =await ClassServices.getClassBySchoolId(dispatch,setIsLoading ,parseInt(params.school_id));
+		
 		setInitialClassesData(classes);
 		setFilteredClasses(classes); // Initially set filtered classes
 	};
@@ -45,7 +45,7 @@ const ClassesTable2 = () => {
 	// Run fetchClasses only when the component mounts or params.id changes
 	useEffect(() => {
 		fetchClasses();
-	}, [dispatch, params.id]);
+	}, [dispatch, params.school_id]);
 
 	// Refresh the classes data after adding a new class
 	const refreshClasses = (newClass) => {
@@ -163,12 +163,12 @@ const ClassesTable2 = () => {
 									>
 										View
 									</Link>
-									<button className="text-indigo-400 hover:text-indigo-300 mr-2">
-										Edit
-									</button>
-									<button className="text-red-400 hover:text-red-300">
+									<Link to={`/classes/student-card/${params.school_id}/${classItem.id}`} className="text-indigo-400 hover:text-indigo-300 mr-2">
+										students Card
+									</Link>
+									{/* <button className="text-red-400 hover:text-red-300">
 										Delete
-									</button>
+									</button> */}
 								</td>
 							</motion.tr>
 						))}

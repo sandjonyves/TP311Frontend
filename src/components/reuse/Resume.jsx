@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Viewer } from '@react-pdf-viewer/core';
 import { themePlugin } from '@react-pdf-viewer/theme';
 import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
@@ -53,14 +53,36 @@ const Resume = ({ pdfUrl }) => {
     const themePluginInstance = themePlugin();
 
     const handleDownload = async () => {
-        const response = await fetch(pdfUrl);
-        const blob = await response.blob();
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = pdfUrl.split('/').pop() || 'document.pdf';
-        link.click();
-        URL.revokeObjectURL(link.href); // Libérer l'URL
+        if (!pdfUrl || pdfUrl.trim() === "") {
+            alert("PDF URL is empty or invalid.");
+            return;
+        }
+
+        try {
+            const response = await fetch(pdfUrl);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch PDF from ${pdfUrl}`);
+            }
+
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = pdfUrl.split('/').pop() || 'document.pdf';
+            link.click();
+            URL.revokeObjectURL(link.href); // Libérer l'URL après le téléchargement
+        } catch (error) {
+            console.log("Download error:", error);
+            alert("There was an error downloading the PDF.");
+        }
     };
+    useEffect(()=>{
+        console.log(pdfUrl)
+    })
+
+    // Ne pas rendre le Viewer si pdfUrl est vide ou invalide
+    if (!pdfUrl || pdfUrl.trim() === "") {
+        return <p>No PDF available to view or download.</p>;
+    }
 
     return (
         <main className="resume">

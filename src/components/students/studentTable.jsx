@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SkeletonLoadingTable from "../reuse/SkeletonLoadingTable";
 import StatCard from "../common/StatCard";
 import SkeletonStatCard from "../reuse/SkeletonCard";
+import ClassCardContainer from "../../container/ClassCardContainer";
 
 const StudentsTable = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -22,15 +23,15 @@ const StudentsTable = () => {
     const [isLoading,setIsLoading] = useState(false)
     const studentSelector = useSelector((state) => state.student);
     const dispatch = useDispatch();
-    const params = useParams();
+   
     const {class_id} = useParams()
 
     const fetchStudents = async () => {
-        setStudents(studentSelector)
+        // setStudents(studentSelector)
 
         try{
             // setFilteredStudents([])
-            const fetchedStudents = await StudentServices.getStudentByClassId(dispatch, setIsLoading,class_id);
+            const fetchedStudents = await StudentServices.getStudentByClassId(dispatch,class_id);
             // console.log('llllllllllllllllllllllll',fetchStudents)
             setStudents(fetchedStudents);
             setFilteredStudents(fetchedStudents);
@@ -42,6 +43,7 @@ const StudentsTable = () => {
     useEffect(() => {
     
         fetchStudents();
+        console.log(students)
     }, [class_id]);
 
     // useEffect(() => {
@@ -98,6 +100,7 @@ const StudentsTable = () => {
 
     return (
         <>
+         {/* <ClassCardContainer/> */}
         <motion.div
 					className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8'
 					initial={{ opacity: 0, y: 20 }}
@@ -150,6 +153,7 @@ const StudentsTable = () => {
                         >
                             New Students
                         </Button>
+                       
                     </div>
                     <div className="relative">
                         <input

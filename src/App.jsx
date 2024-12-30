@@ -61,10 +61,10 @@ function App() {
                         <Route path="/classes" element={<ClassPage />} />
                         <Route path="/students" element={<StudentPage />} />
                         <Route path="/student/profile/:student_id" element={<UserProfile />} />
-                        <Route path="/classes/:class_id" element={<ClassContainer />} />
-                        <Route path="/schools/:id" element={<SchoolContainer />} />
+                        <Route path="/classes/:class_id" element={<ClassContainer/>} />
+                        <Route path="/schools/:school_id" element={<SchoolContainer />} />
                         <Route path="/schools/cards/:school_id" element={<SchoolCardContainer />} />
-                        <Route path="/schools/cards/:id/:class_id" element={<ClassCardContainer />} />
+                        <Route path="/classes/student-card/:school_id/:class_id" element={<ClassCardContainer />} />
                         <Route path="/card/save" element={<CardSavePage />} />
                         <Route path="/cards" element={<CardView />} />
                         <Route path="/users" element={<UsersPage />} />

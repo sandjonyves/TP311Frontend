@@ -33,11 +33,10 @@ const StudentServices = {
     },
 
     // Get Classes by School ID
-    getStudentByClassId: async (dispatch, setIsLoading,schoolId) => {
-        setIsLoading(true)
+    getStudentByClassId: async (dispatch,ClassId) => {
         try {
-            const response = await Axios.get(`/app/students/classe/${parseInt(schoolId)}/`);
-            setIsLoading(false)
+            const response = await Axios.get(`/app/students/classe/${parseInt(ClassId)}/`);
+            // setIsLoading(false)
             dispatch(fetchStudentSuccess(response.data));
             return response.data;
         } catch (error) {
